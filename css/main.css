@@ -1,0 +1,227 @@
+@charset "UTF-8";
+/* CSS Document */
+
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+/* Styles */
+}
+
+/* Smartphones (landscape) ----------- */
+@media only screen and (min-width : 321px) {
+/* Styles */
+}
+
+/* Smartphones (portrait) ----------- */
+@media only screen and (max-width : 320px) {
+/* Styles */
+}
+
+/* iPads (portrait and landscape) ----------- */
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) {
+/* Styles */
+}
+
+/* iPads (landscape) ----------- */
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : landscape) {
+/* Styles */
+}
+
+/* iPads (portrait) ----------- */
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait) {
+/* Styles */
+}
+
+/* Desktops and laptops ----------- */
+@media only screen and (min-width : 1224px) {
+/* Styles */
+}
+
+/* Large screens ----------- */
+@media only screen and (min-width : 1824px) {
+/* Styles */
+}
+
+/* iPhone 2G, 3G, 4, 4S in portrait & landscape ----------- */
+@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+/* STYLES GO HERE */
+}
+
+/* iPhone 2G, 3G, 4, 4S in landscape ----------- */
+@media only screen and (min-device-width : 320px) and (max-device-width : 480px) and (orientation : landscape) {
+/* STYLES GO HERE */
+}
+
+/* iPhone 2G, 3G, 4, 4S in portrait ----------- */
+@media only screen and (min-device-width : 320px) and (max-device-width : 480px) and (orientation : portrait) {
+/* STYLES GO HERE */
+}
+
+/* iPhone 5 in portrait & landscape ----------- */
+@media only screen and (min-device-width : 320px) and (max-device-width : 568px) { 
+/* Styles */
+}
+
+/* iPhone 5 in landscape ----------- */
+@media only screen and (min-device-width : 320px) and (max-device-width : 568px) and (orientation : landscape) { 
+/* Styles */
+}
+
+/* iPhone 5 in portrait ----------- */
+@media only screen and (min-device-width : 320px) and (max-device-width : 568px) and (orientation : portrait) { 
+/* Styles */
+}
+
+@media screen and (device-height: 568px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 2) {
+/* Styles */
+}
+
+/* Retina-specific stuff here ----------- */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+/* Styles */
+}
+
+body 					{ margin:0; padding:0; background-color:#F8F8F8; font-family:'Questrial', Arial, Helvetica, sans-serif;  }
+p 						{ margin:0; padding:0; }
+
+/* quitar puntitos de los enlaces */
+* 						{ outline: none; }
+
+.wrapper                { padding:0 20px; -webkit-box-sizing:border-box; -moz-box-sizing:border-box; box-sizing:border-box; }
+
+/* CONTENEDOR */
+#contenedor				{ width:1024px;	height:800px; margin:0 auto; padding:0; color:#333333; background-color:#FFFFFF; overflow:hidden; }
+#contenedor .activo 	{ color:#333333; }
+
+/* ENCABEZADO */
+#cabeza 				{ width:100%; height:44px; margin:0; background-color:#F8F8F8; color:#333333; font-size:18px; overflow:hidden;}
+.back					{ margin:0; padding:13px 0 13px 18px; width:100px; height:16px; text-align:left; color:#BD1622; position:relative; background:url(../recursos/back-14-on.png) no-repeat 0 12px; background-size:13px 20px; }
+.titulo 				{ margin:0 auto; padding:13px 0 13px 0px; width:118px; height:16px; text-align:center; position:relative; top:-42px; }
+#mas 					{ margin:0; padding:0; width:32px; height:18px; float:right; position:relative; top:-72px; background:url(../recursos/mas-14.png) no-repeat 10px 0 ; background-size:18px 36px; z-index:10000; display:none; }
+#menos 					{ margin:0; padding:0; width:32px; height:18px; float:right; position:relative; top:-72px; background:url(../recursos/menos-14.png) no-repeat 0px -18px; background-size:18px 36px; display:none; }
+
+/* CONTENIDO */
+#appContent				{ width:100%; overflow:hidden; margin:0; padding:0; position:relative; }
+
+#idiomaFranja 			{ width:100%; position:absolute; top:0; left:0; }
+#e 						{ width:100%; background:url(../recursos/e@2x.png) no-repeat center center; background-size:318px 318px; }
+
+#selector,
+#combine				{ width:100%; position:absolute; top:0; left:1024px; background-color:#EEEEEE; }
+#gamadecor 				{ width:100%; position:absolute; top:757px; left:0px; background-color:#FFFFFF; }
+
+.franja 				{ width:100%; height:43px; margin:0; padding:0;	color:#BD1622; font-size:17px; background-color:#FFFFFF; text-align:center; }
+
+.borderBottom 			{ border-bottom:#CCCCCC 1px solid }
+.borderTop 				{ border-top:#CCCCCC 1px solid }
+.franja ul 				{ width:100%; height:16px; margin:0 auto; padding:12px 0px; }
+.franja li 				{ display:inline; margin:0 12px; padding:0; list-style:none; }
+
+/* PIE */
+#pie 					{ width:100%; height:56px; margin:0 auto; padding:0; color:#ccc; text-align:center; background-color:#FFFFFF; }
+#icon-search			{ width:64px; height:18px; margin:4px 18px 0px; padding:32px 0 0; background:url(../recursos/combine-14.png) no-repeat -64px 0; background-size:128px 32px; position:relative; font-size:13px; font-size:center; color:#BD1622; }
+#logo					{ width:118px; height:32px;	margin:0 auto; padding:0; background:url(../recursos/GAMADECOR-14.png) no-repeat 0 8px; background-size:118px 14px; position:relative; top:-41px; }
+#icon-palette			{ width:64px; height:18px; margin:6px 18px 0px; padding:32px 0 0; background:url(../recursos/palette-14.png) no-repeat 0 0; background-size:128px 32px; position:relative; top:-87px; float:right; font-size:13px; font-size:center; color:#999999; }
+
+
+/* COLORES */
+#colours				{ width:100%; height:320px; margin:0; padding:0; position:relative; top:0px; background-color:#EEEEEE; }
+#samples				{ width:100%; height:320px; margin:0; padding:0; position:relative; top:0px; }
+#numColor				{ color:#333333; }
+
+#colorContent			{ width:100%; height:320px; margin:0; padding:0; overflow:auto; background-color:#CCCCCC; }
+#muestraContent			{ width:100%; height:320px; margin:0; padding:0; overflow:hidden; }
+
+.colour					{ width:200px; height:126px; margin:0px 1px 2px 1px; float:left; }
+.alpha 					{ margin-left:0px; }
+.omega					{ margin-right:0px; }
+
+/* GAMADECOR */
+#gamadecor 				{ overflow:auto; } 
+#gamadecor .contenido	{ width:344px; height:auto; margin:0; padding:24px 348px 0; overflow:auto; }
+#gamadecor .contenido p { margin-bottom:16px; color:#333333; text-align:center; font-size:13px; line-height:16px; }
+#gamadecor .contenido a { text-decoration:none;	color:#333333; }
+
+/* COMBINAR */
+#combine				{ overflow:hidden; }
+#matriz 				{ width:100%; display:none; overflow:hidden; }
+#matriz ul 				{ width:100%; margin:0 auto; padding:0; }
+.colourColum			{ width:100%; height:126px; list-style:none; }
+.colum					{ width:100%; float:left; overflow:hidden; }
+
+#acaSelect	 			{ color:#333; }
+#colorSelect 			{ height:92px; color:#999; font-size:14px; line-height:18px; }
+#colorSelect li			{ display:block; }
+
+#linUp,#linDown 		{ position:absolute; top:512px; z-index:10000; }
+.linea 					{ width:100%; height:8px; background-color:#333333; }
+
+/* POPOVER */
+#sombra					{ width:100%; height:auto; background:url(../recursos/ngr-20.png) repeat; position: relative; top:-1024px; z-index:9999; display:none; }
+#popover				{ width:304px; margin:0 auto; position:relative; z-index:10000; display:none; }
+#punta 					{ width:32px; height:13px; margin-left:254px; background:url(../recursos/punta-14.png) no-repeat 0 0; background-size:32px 13px; }
+#popover ul 			{ width:100%; margin:0 auto; padding:0; }
+#popover li 			{ width:90%; color:#BD1622; font-size:18px; text-align:left; height:18px; list-style:none; padding:13px 5%; background:url(../recursos/blc-90.png) repeat; border-bottom:1px solid #CCCCCC; }
+#popover li:last-child	{ border-bottom:none;
+						  -webkit-border-bottom-right-radius: 10px;
+						  -webkit-border-bottom-left-radius: 10px;
+						  -moz-border-radius-bottomright: 10px;
+						  -moz-border-radius-bottomleft: 10px;
+						  border-bottom-right-radius: 10px;
+						  border-bottom-left-radius: 10px; }
+
+#popover li:first-child	{ -webkit-border-top-left-radius: 10px;
+						  -webkit-border-top-right-radius: 10px;
+						  -moz-border-radius-topleft: 10px;
+						  -moz-border-radius-topright: 10px;
+						  border-top-left-radius: 10px;
+						  border-top-right-radius: 10px; }
+
+/* iPhone 2G, 3G, 4, 4S in portrait & landscape ----------- */
+/* @media only screen and (min-device-width : 320px) and (max-device-width : 568px) {*/
+
+@media only screen and (max-width: 470px) {
+	.wrapper				{ padding:0 8px; }
+	/* ENCABEZADO */
+	#cabeza					{ font-size:16px; }
+	.back					{ padding:14px 0 13px 18px; }
+	.titulo 				{ padding:14px 0 13px 0px; }
+	
+	/* CONTENEDOR */
+	#contenedor				{ width:100%; }
+	#e 						{ background-size:158px 158px; }
+	#selector,
+	#combine				{ left:320px; }
+	#gamadecor 				{ top:420px; }
+
+	.franja 				{ height:36px; font-size:14px; }
+	.franja ul 				{ height:14px; padding:11px 0px; }
+	.franja li 				{ margin:0 6px; }
+
+	/* PIE */
+	#pie 					{ height:49px; }
+	#icon-search			{ height:16px; margin:3px 0 0; padding:32px 0 0; font-size:10px; }
+	#logo					{ top:-41px; }
+	#icon-palette			{ height:16px; margin:3px 0 0; padding:32px 0 0; top:-83px; float:right; font-size:10px; }
+	
+	/* COLORES */
+	#colours 				{ width:100%; }
+	#colorContent			{ width:100%; }
+	#muestraContent			{ width:100%; }
+	.colour					{ width:102px;	height:64px; }
+
+	/* COMBINAR */
+	.linea 					{ height:6px; background-color:#333333; }
+
+	/* GAMADECOR */
+	#gamadecor .contenido	{ width:288px; height:auto; padding:24px 16px 0;}
+}
+
+/* iPads (portrait and landscape) ----------- */
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) {
+	.wrapper { padding:0 10px; }
+}
+
+/* iPads (landscape) ----------- */
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : landscape) {
+	/*#contenedor	 { height:600px; } */
+}

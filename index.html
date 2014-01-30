@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>GD emotions</title>
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+		<!-- Run in full-screen mode -->
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<!-- Make the status bar black with white text -->
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<!-- Disable phone number detection -->
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<!-- Prevent text size adjustment on orientation change. -->
+		<style>html { -webkit-text-size-adjust: 100%; }</style>
+
+		<link rel="apple-touch-icon" href="recursos/icon.png"/>
+		<link rel="apple-touch-startup-image" href="recursos/startup@2x.png" media="(device-height: 568px)">
+		<link rel="apple-touch-startup-image" href="recursos/startup.png" sizes="640x920" media="(device-height: 480px)">
+
+		<link href='http://fonts.googleapis.com/css?family=Questrial' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" type="text/css" href="css/main.css"/>
+	</head>
+
+	<body>
+		<div id="contenedor">
+			<!-- CABEZA -->
+			<div id="cabeza" class="wrapper borderBottom">
+				<p id="idioma" class="back">Idioma</p>
+				<p class="titulo">emotions</p>
+				<p id="mas"></p>
+				<p id="menos"></p>
+			</div>
+			<!-- CONTENIDO -->
+			<div id="appContent">
+				<!-- IDIOMA -->
+				<div id="idiomaFranja" style="display:none;">
+					<div class="franja borderBottom">
+						<ul>
+							<li id="es">Español</li>
+							<li id="gb">English</li>
+							<li id="fr">Français</li>
+						</ul>
+					</div>
+					<div id="e"></div>
+				</div>
+				<!-- SELECTOR -->
+				<div id="selector">
+					<!-- COLOURS -->
+					<div id="colours">
+						<div id="materials" class="franja borderBottom">
+							<ul>
+								<li id="#0">Laminado</li>
+								<li id="#1">Estratificado</li>
+								<li id="#2">Lacado</li>
+								<li id="#3">Chapado</li>
+							</ul>
+						</div>
+						<div id="finishes" class="franja borderBottom" style="display:none;">
+							<ul></ul>
+						</div>
+						<div id="numColor" class="franja borderBottom" style="display:none;">
+							<ul></ul>
+						</div>
+						<div id="colorContent" style="display:none;"></div>
+					</div>
+					<!-- SAMPLES -->
+					<div id="samples">
+						<div id="select" class="franja borderBottom">
+							<ul></ul>
+						</div>
+						<div id="muestraContent"></div>
+						<div id="series" class="franja borderTop">
+							<ul></ul>
+						</div>
+					</div>
+				</div>
+				<!-- COMBINE -->
+				<div id="combine">
+					<!-- METERIAL SELECT -->
+					<div id="acaSelect" class="franja borderBottom" style="display:none;">
+						<ul></ul>
+					</div>
+					<!-- MATRIZ -->
+					<div id="matriz">
+					</div>
+					<!-- COLOR SELECT -->
+					<div id="colorSelect" class="franja borderTop" style="display:none;">
+						<ul></ul>
+					</div>
+					<!-- LINEAS -->
+					<div id="linUp" class="linea"></div>
+					<div id="linDown" class="linea"></div>
+				</div>
+				<!-- GAMADECOR -->
+				<div id="gamadecor">
+					<div class="contenido"></div>
+				</div>
+			</div>
+			<!-- PIE -->
+			<div id="pie" class="borderTop">
+				<div id="icon-search">Combinar</div>
+				<div id="logo"></div>
+				<div id="icon-palette">Materiales</div>
+			</div>
+			<!-- POPOVER -->
+			<div id="popover">
+				<div id="punta"></div>
+				<ul>
+					<li>Laminado</li>
+					<li>Estratificado</li>
+					<li>Lacado</li>
+					<li>Chapado</li>
+				</li>
+			</div>
+			<div id="sombra"></div>
+		</div>
+
+		<!-- SCRIPT -->
+		<script type="text/javascript" src="js/jquery-2.1.0.min.js"></script>
+		<script type="text/javascript" src="js/jquery.nicescroll.min.js"></script>
+		<script type="text/javascript" src="js/jcarousellite.min.js"></script>
+		<script type="text/javascript" src="js/jquery.mousewheel.js"></script>
+		<script type="text/javascript" src="js/main.js"></script>
+		<script>
+
+			if(window.screen.height==568) { // iPhone 4"
+				document.querySelector("meta[name=viewport]").content="width=320.1";
+			}
+
+			var idi = 'es',
+				selecIdioma;
+
+			var storage = window.localStorage;
+			var compruebaIdioma = function() {
+				if(window.sessionStorage && window.localStorage) {
+					var idiLocal = storage.getItem('idioma');
+					if(idiLocal !== null) {
+						idi = idiLocal;
+						selecIdioma();
+					}
+					else
+						$('#idiomaFranja').css('display','block');
+				}
+			};
+
+			$(document).ready(function(e) {
+
+				//- SCROLL --------------------------------
+				$('#colorContent,#gamadecor').niceScroll().hide();
+
+				//- VALORES SELECCIONADOS -----------------
+				$('#idioma,#icon-search,#icon-palette').css('visibility','hidden');
+				$('#pie').css('border-color','#FFFFFF');
+
+				var pValor = 0,
+					mValor = null,
+					aValor = null;
+
+				var quiEsta = $('#combine');
+
+				var alt   = 0,
+					ample = 0,
+					numLineaColores = 3,
+					anchoBrillo = 102,
+					altoBrillo = 62,
+					dispositivo = 'Desktop';
+
+				var altCab = $('#cabeza').height(),
+					altFra = $('#materials').height(),
+					altPie = $('#pie').height();
+
+				var altura  = 0,
+					margen  = 0;
+
+				var numColum = 0;
+				var back = 0;
+				var sample = 0;
+
+				//- GAMADECOR ------------------------------
+				var escriu = function(){
+					var codig = new String
+					if(idi=='gb') {
+						codig += '<p>GAMADECOR, a firm attached to the PORCELANOSA Group, was created in 1987 with a view to offering consumers top-quality high-tech bathroom and kitchen furniture based on state-of-the-art designs.</p>';
+						codig += '<p>With headquarters based in Vila-real, Castellón, Spain, GAMADECOR’s production facilities, fitted with cutting-edge technology, currently cover an area of over 125,000 m². At present, the firm has an average workforce of two hundred members of staff.</p>';
+						codig += '<p>GAMADECOR exports its products to over thirty countries on all five continents. It has its own showrooms in Spain, France, the UK, USA, Italy, Portugal and Germany and over one hundred independent distributors.</p>';
+						codig += '<p>GAMADECOR<br/>';
+						codig += '   <a href="http://www.gama-decor.com">http://www.gama-decor.com/index.php?i=gb</a></p>';
+						codig += '<p>PORCELANOSA Group<br/>';
+						codig += '   <a href="http://www.porcelanosa.com">http://www.porcelanosa.com/gb/porcelanosa.php</a></p>';
+						codig += '<p>&nbsp;</p>';
+						codig += '<p>The colors can be different from the original ones.</p>'
+					}
+					else if(idi=='fr') {
+						codig += '<p>GAMADECOR, une société qui appartient au Groupe PORCELANOSA, voit le jour en 1987 avec l’objectif de proposer des meubles de salles de bains et de cuisines de la meilleure qualité, de haute technologie et d’un design avancé.</p>';
+						codig += '<p>Située à Villarreal (province de Castellón, Espagne), ses installations mettent à profit les derniers progrès techniques et occupent actuellement une surface de plus de 125.000 m², où la société occupe en moyenne deux cents travailleurs.</p>';
+						codig += '<p>GAMADECOR exporte ses produits dans plus de trente pays des cinq continents et possède ses propres points de vente en Espagne, en France, au Royaume Uni, aux États Unis, en Italie, au Portugal et en Allemagne. La société travaille en outre avec plus de cent distributeurs 		indépendants.</p>';
+						codig += '<p>GAMADECOR<br/>';
+						codig += '   <a href="http://www.gama-decor.com">http://www.gama-decor.com/index.php?i=fr</a></p>';
+						codig += '<p>PORCELANOSA Group<br/>';
+						codig += '   <a href="http://www.porcelanosa.com">http://www.porcelanosa.com/fr/porcelanosa.php</a></p>';
+						codig += '<p>&nbsp;</p>';
+						codig += '<p>Les couleurs peuvent être différentes par rapport à celles d’origine.</p>'
+					}
+					else {
+						codig += '<p>GAMADECOR, empresa perteneciente al Grupo PORCELANOSA, nace en el año 1987 con el objetivo de ofrecer productos de alta calidad, tecnología y diseño avanzado en la fabricación de muebles de baño y cocina</p>';
+						codig += '<p>Ubicada en Vila-real, Castellón, España, sus instalaciones están dotadas de los últimos avances técnicos, ocupando en la actualidad una superficie superior a los 125.000 m², con una plantilla media de doscientos empleados.</p>';
+						codig += '<p>GAMADECOR exporta sus productos a más de treinta países de los cinco continentes, con tiendas propias en España, Francia, Reino Unido, Estados Unidos, Italia, Portugal y Alemania, contando con más de cien distribuidores independientes.</p>';
+						codig += '<p>GAMADECOR<br/>';
+						codig += '   <a href="http://www.gama-decor.com">http://www.gama-decor.com</a></p>';
+						codig += '<p>PORCELANOSA Group<br/>';
+						codig += '   <a href="http://www.porcelanosa.com">http://www.porcelanosa.com</a></p>';
+						codig += '<p>&nbsp;</p>';
+						codig += '<p>Los colores pueden presentar diferencias respecto a los originales.</p>'
+					}
+					codig += '<div style="clear:both; height:16px;"></div>';
+					$('#gamadecor .contenido').html(codig);
+					return false;
+				};
+
+				//- BOTON ACTIVO ---------------------------
+				var activo_btn = function($qui,$onesta) {
+					$onesta.each(function() {
+						if($qui != this) $(this).removeClass('activo');
+					});
+					if($qui.attr('class') == 'activo')
+						$qui.removeClass('activo');
+					else
+						$qui.addClass('activo');
+					return false;
+				};
+
+				//- SOBRE BOTON ----------------------------
+				var sobre_btn = function($onesta) {
+					$onesta.hover(
+						function(event) { $(this).css({cursor:'pointer'}); },
+						function(event) { $(this).css({cursor:'normal'}); }
+					);
+					return false;
+				};
+
+				//- DEVUELVE IDIOMA ------------------------
+				var txt_idi = function(nodo) {
+					if(idi=='gb')
+						return nodo.gb;
+					else if(idi=='fr')
+						return nodo.fr;
+					else
+						return nodo.es;
+				};
+
+				selecIdioma = function() {
+					var codi = '';
+					for(var i in materiales) {
+						codi += '<li id="#'+i+'">'+txt_idi(materiales[i])+'</li>\n';
+					}
+					$('#materials ul').html(codi);
+					//- IDIOMA ICONOS PIE -----------------
+					$('#icon-search').html(txt_idi(textos[2]));
+					$('#icon-palette').html(txt_idi(textos[3]));
+					$('#idioma').html(txt_idi(textos[4]));
+					//-
+					$('#idioma,#icon-search,#icon-palette').css('visibility','visible');
+					$('#pie').css('border-color','#CCCCCC');
+					$('#finishes,#numColor,#colorContent,#samples').css('display','none');
+					//- SELECTOR MENU CLICK -----------------
+					//- MATERIALS -----------------
+					$('#materials ul li').click(function() {
+						$('#finishes').css("display","none");
+						mValor = parseInt($(this).attr('id').split('#')[1]);
+						if((mValor == 0 && pValor == 0) || mValor == 2)
+							construyeMenu(mValor,2);					
+						aValor = null;
+						activo_btn($(this),$('#materials ul li'));
+						componerColores(mValor,1);
+						//- FINISHES -----------------
+						$('#finishes ul li').click(function() {
+							aValor = parseInt($(this).attr('id').split('#')[1]);
+							activo_btn($(this),$('#finishes ul li'));
+							componerColores(aValor,2);
+						});
+						sobre_btn($('#finishes ul li'));
+					});
+					sobre_btn($('#materials ul li'));
+					//- OTROS ----------------------------
+					escriu();
+					$('body').on('click','#logo',logoClick);
+					sobre_btn($('#logo'));
+					//- CONSTRUIR BOX ----------------------------
+					var codi = '';
+					for(var i in materiales) {
+						codi += '<li id="#'+i+'">'+txt_idi(materiales[i])+'</li>\n';
+					}
+					$('#popover ul').html(codi);
+					//-
+					$('#matriz,#acaSelect ul,#colorSelect ul').html('');
+					$('#acaSelect,#colorSelect').css('display','none');
+					numColum = 0;
+					//- COMBINA MATERIAL MENU CLICK -----------------
+					$('#popover ul li').click(function() {
+						mSelect = $(this).index();
+						var codi = '';
+						codi += '<li>'+txt_idi(materiales[mSelect])+'</li>\n';
+						$('#acaSelect ul').append(codi);
+						//-
+						numColum = $('#acaSelect ul li').length;
+						if(numColum>=4)
+							 $('#mas').css('background-position','10px -18px');
+						else if(numColum>0)
+							 $('#menos').css('background-position','0px 0px');
+						//-
+						columnas_colores(mSelect,1);
+						//-
+						verPopOver(false);
+						$('#acaSelect,#colorSelect').css('display','block');
+					});
+					sobre_btn($('#popover ul li'));
+
+					//- ANIMA ----------------------------
+					quiEsta.animate({
+						left: 0
+					}, 300, function() {
+						if($('#combine').css('left') == '0px') {
+							verMasMenos(true);
+							posicionPopOver();
+							verPopOver(true);
+							sample = 0;
+							verBack(false);
+						}
+					});
+				};
+
+				//- VER OCULTAR POPOVER --------------------
+				function verPopOver(logico) {
+					if(logico) {
+						$('#popover,#sombra').css('display','block');
+						$('.back').css({'color':'#999','background-image':'url(recursos/back-14-of.png)'});
+						$('#icon-search,#icon-palette').css({'background-position':'0px 0px','color':'#999'});
+						$('#menos').css('background-position','0px -18px');
+						$('#mas').css('background-position','10px 0px');
+					}			
+					else {
+						$('#popover,#sombra').css('display','none');
+						$('.back').css({'color':'#BD1622','background-image':'url(recursos/back-14-on.png)'});
+						if($('#combine').css('left') == '0px')
+							$('#icon-search').css({'background-position':'-64px 0px','color':'#BD1622'});
+						else if($('#selector').css('left') == '0px')
+							$('#icon-palette').css({'background-position':'-64px 0px','color':'#BD1622'});
+						if(numColum>0)
+							$('#menos').css('background-position','0px 0px');
+						else
+							$('#menos').css('background-position','0px -18px');
+					}
+					return false;
+				}
+
+				//- POSICION POPOVER -----------------------
+				function posicionPopOver() {
+					var derecha = (parseInt($('#contenedor').width()-$('#popover').width())/2)-8;
+					$('#popover').css({'top':'-'+parseInt($('#contenedor').height()-($('#cabeza').height()-8))+'px','left':derecha+'px'});
+					$('#sombra').css({'top':'-'+parseInt($('#contenedor').height()+$('#popover').height())+'px','height':$('#contenedor').height()+'px'});
+					return false;
+				}
+
+				//- ELEGIR IDIOMA --------------------------
+				$('#idiomaFranja ul li').click(function() {
+					idi = $(this).attr('id');
+					if(window.sessionStorage && window.localStorage)
+						storage.setItem('idioma', idi);
+					selecIdioma();
+				});
+				sobre_btn($('#idiomaFranja ul li'));
+			
+				//- CAMBIAR IDIOMA -------------------------
+				$('#idioma').bind({
+					click: function() {
+						if(back==0) {
+							$('#idiomaFranja').css('display','block');
+							quiEsta.animate(
+								{ left:ample },
+								300,
+								function() {
+		    						$('#idioma,#icon-search,#icon-palette').css('visibility','hidden');
+									$('#pie').css('border-color','#FFFFFF');
+									verMasMenos(false);
+		    					}
+		    				);
+						}
+						else {
+							$('#samples').animate(
+								{ top:0 },
+								300,
+								function() {
+									sample = 0;
+									verBack(false);
+								}
+							);
+						}
+					}
+				});
+				sobre_btn($('#idioma'));
+
+				//- SE VE ----------------------------------
+				function seVe(desde) {
+					margen = (ample-$('#gamadecor .contenido').width())/2;
+
+					var altoFranjas = 0;
+					if(desde == 'selector') {
+						if($('#materials').css('display') == 'block')
+							altoFranjas += $('#materials').height()+1;
+						if($('#finishes').css('display') == 'block')
+							altoFranjas += $('#finishes').height()+1;
+						if($('#numColor').css('display') == 'block')
+							altoFranjas += $('#finishes').height()+1;
+
+						var alttt = parseInt($('#contenedor').height()-($('#cabeza').height()+$('#pie').height()+2+altoFranjas));
+						$('#colorContent').css('height',alttt+'px');
+						altura = parseInt($('#contenedor').height()-($('#cabeza').height()+$('#pie').height()+$('#select').height()+$('#series').height()+4));
+						$('#muestraContent,#muestraContent div').css('height',altura+'px');
+						if(sample==1) 
+							$('#samples').css('top','-'+$('#selector').height()+'px');
+					}
+					return false;
+				}
+
+				//- AJUSTE DIMENSIONES ---------------------
+				var tamany = function() {
+					var uagent = navigator.userAgent.toLowerCase();
+					var wAlt = window.innerHeight;
+					var wAnc = window.innerWidth;
+
+					if(uagent.search(/iphone|ipad|ipod/) > -1) {
+						alt = wAlt;
+						ample = wAnc;
+						//- iPad --
+						if(uagent.search('ipad') > -1) {
+							//- ipad 2 landscape ---
+							if(wAnc == 1024) {
+								numLineaColores = 5;
+								anchoBrillo = Math.floor(parseInt((ample-8)/5));
+								altoBrillo = 132;
+								dispositivo = 'iPad2';
+							}
+							//- ipad 2 portrait ---
+							else {
+								numLineaColores = 4;
+								anchoBrillo = Math.floor(parseInt((ample-6)/4));
+								altoBrillo = 132;
+								dispositivo = 'iPad2';
+							}
+							if(window.devicePixelRatio == 2)
+								dispositivo = 'iPad';
+						}
+						//- iPhone --
+						else if(uagent.search(/iphone|ipod/) > -1) {
+							if(window.devicePixelRatio == 2) {
+								dispositivo = 'iPhone5';
+							}
+							else {
+								dispositivo = 'iPhone';
+							}
+							numLineaColores = 4;
+							anchoBrillo = Math.floor(parseInt((ample-6)/4));;
+							altoBrillo = anchoBrillo;
+						}
+						$('#contenedor').css({'width':'100%','height':alt+'px'});
+					}
+					else {
+						numLineaColores = 5;
+						anchoBrillo = 200,
+						altoBrillo = 126;
+						dispositivo = 'Desktop';
+
+						if(wAnc >= 1024) {
+							alt = wAlt;
+							ample = 1024;
+							numLineaColores = 5;
+							anchoBrillo = Math.floor(parseInt((ample-8)/5));
+							altoBrillo = 126;
+						}
+						//- WVGA 480x800 o 480x854 o 600x1024 ---
+						else if(wAnc >= 800 && wAnc < 1024) {
+							alt = wAlt;
+							ample = wAnc;
+							numLineaColores = 5;
+							anchoBrillo = Math.floor(parseInt((ample-8)/5));
+							altoBrillo = 96;
+						}
+						else if(wAnc >= 480 && wAnc < 800) {
+							alt = wAlt;
+							ample = wAnc;
+							numLineaColores = 4;
+							anchoBrillo = Math.floor(parseInt((ample-6)/4));
+							altoBrillo = 80;
+						}
+						//- HVGA 320x480 ---
+						else if(wAnc < 480) {
+							alt = wAlt;
+							ample = wAnc;
+							numLineaColores = 3;
+							anchoBrillo = Math.floor(parseInt((wAnc-6)/3));
+							altoBrillo = 64;
+						}
+						if(wAlt < 801)
+							alt = wAlt;
+						else
+							alt = 800;
+						$('#contenedor').css({'width':ample+'px','height':alt+'px'});
+					}
+
+					$('#appContent,#idiomaFranja,#selector,#colours,#samples,#combine,#gamadecor').css('height',parseInt($('#contenedor').height()-($('#cabeza').height()+$('#pie').height()+2))+'px');
+					$('#e').css('height',parseInt($('#idiomaFranja').height()-($('.franja').height()+1))+'px');
+					$('#colorContent div').css({'height':altoBrillo+'px','width':anchoBrillo+'px'});
+
+					//- Posicion ---
+					if($('#gamadecor').css('top') != '0px')
+						$('#gamadecor').css('top',alt+'px');
+					if($('#combine').css('left') != '0px')
+						$('#combine').css('left',ample+'px');
+					if($('#selector').css('left') != '0px')
+						$('#selector').css('left',ample+'px');
+
+					//- Posicion PopOver ---
+					posicionPopOver()
+
+					//- Cambiar Class de los colores ---
+					$('#colorContent div').each(function(i,e) {
+						$(this).removeClass();
+						var clase = 'colour';
+						if(validar(i,parseInt(numLineaColores))) {
+							clase += ' alpha';
+							multi = parseInt(i);
+						}
+						if(i == multi + parseInt(numLineaColores-1))
+							clase += ' omega';	
+						$(this).addClass(clase);
+					});
+					//- Cambiar alto muestras combine ---
+					var altoColor = parseInt($('#contenedor').height()-($('#cabeza').height()+$('#pie').height()+$('#acaSelect').height()+$('#colorSelect').height()+4))/3;
+					if(numColum > 0) {
+						$('#matriz, .colum').css('height',parseInt((altoColor*3)-1)+'px');
+						$('.colourColum').css('height',altoColor+'px');
+						ajusteColumna();
+						//-
+						$('#matriz .colum').each(function(){
+							var columna = $(this);
+							console.log(columna.attr('id'));
+							columna.trigger('endCarousel');
+							activaCarousel(columna);
+						});	
+					}
+					seVe('combine');
+					//- Posicion LINEAS ---
+					$('#linUp').css('top',parseInt($('#acaSelect').height()+altoColor)+'px');
+					$('#linDown').css('top',parseInt($('#acaSelect').height()+altoColor+altoColor)+'px');
+					//- Cambiar tamaño brillo ---
+					$('#colorContent div img').css({'height':altoBrillo+'px','width':anchoBrillo+'px'});
+					//- Cambiar muestra ---
+					var newAltura =	parseInt($('#contenedor').height()-($('#cabeza').height()+$('#pie').height()+$('#select').height()+$('#series').height()+4));
+					$('#muestraContent').css({'width':ample+'px','height':newAltura+'px'});
+					$('#muestraContent div').css({'width':ample+'px','height':newAltura+'px'});
+					$('#muestraContent div img').attr('width',ample);
+					$('#muestraContent div img').attr('height',newAltura);
+					//- Cambiar GAMADECOR ---
+					$('#gamadecor .contenido').css({'padding-left':margen+'px','padding-right':margen+'px'});
+					
+					seVe('selector');
+					return false;
+				};
+				tamany();
+
+				//- CAMBIA ORIENTACION o DIMENSIONES -------
+				$(window).bind('orientationchange resize', function(event) {
+					tamany();
+					return false;
+				});
+
+				//- CARGA COLORES --------------------------
+				var muestras = new Array();
+				$.ajax({
+					url: 'data/colores.json',
+					async: false,
+					dataType: 'json',
+					success: function(data) {
+						//componerColores(response);
+						$.each(data, function(i,item) {
+							muestras.push(item);
+						});
+					},
+					error: function(err){
+						console.log(err);
+					}
+				});
+
+				//- COMPONER COLORES -----------------------
+				var componerColores = function(valor,nivel) {
+					// p : producto ; m : muestra, a : acabado
+					var colores = new Array();
+					for(var i in muestras) {
+						var vPRO = muestras[i].pro.split('-');
+						for(var n in vPRO) {
+							if(parseInt(vPRO[n]) === pValor) 
+								vPRO = pValor;
+						}
+						var vMAT = parseInt(muestras[i].mat);
+						var vACA = parseInt(muestras[i].aca);
+						//-
+						if(nivel == 0) {
+							if(vPRO === pValor)
+								colores.push({'nom':normalize(muestras[i].nom),'exa':muestras[i].exa,'aca':muestras[i].aca,'mat':muestras[i].mat,'eti':muestras[i].eti,'ser':muestras[i].ser})
+						}
+						else if(nivel == 1) {
+							if(vPRO === pValor && vMAT === mValor)
+								colores.push({'nom':normalize(muestras[i].nom),'exa':muestras[i].exa,'aca':muestras[i].aca,'mat':muestras[i].mat,'eti':muestras[i].eti,'ser':muestras[i].ser})
+						}
+						else if(nivel == 2) {
+							if(vPRO === pValor && vMAT === mValor && vACA === aValor)
+								colores.push({'nom':normalize(muestras[i].nom),'exa':muestras[i].exa,'aca':muestras[i].aca,'mat':muestras[i].mat,'eti':muestras[i].eti,'ser':muestras[i].ser})
+						}
+					}
+					//- Numero de muestras y mostrar franja ----
+					$('#numColor ul').html('<li>'+colores.length+' '+txt_idi(textos[0])+'</li>');
+					$('#numColor').css('display','block');
+					//- Añadir colores al contenedor ----
+					$('#colorContent').html(codiColores(colores));
+					$('#colorContent div').css({'height':altoBrillo+'px','width':anchoBrillo+'px'});
+					//- Ajustar altura y mostrar el contenedor de colores ----
+					seVe('selector');
+					$('#colorContent').css('display','block');
+					//- PULSAR MUESTRA ----
+					$('#colorContent .colour').click(function() {
+						seVe('selector');
+						var ide = $(this).attr('id');
+						var trozos = ide.split('-');
+						var imagen = trozos[0].toLowerCase();
+						checkImage(imagen,trozos[6],trozos[3],'selector');
+						//-comprobar acabados ---
+						if(trozos[3] == 'null')
+							var aca = '';
+						else 
+							var aca = '<li>'+txt_idi(acabados[trozos[3]])+'</li>';
+						//- Series ---
+						var series = trozos[5].split('#');
+						if(typeof(trozos[valor]) != 'undefined')
+							$('#series ul').html('<li>'+series[pValor]+'</li>');
+			
+						$('#select ul').html('<li>'+txt_idi(materiales[trozos[2]])+'</li>'+aca+'<li>'+primerMay(trozos[4])+'</li>');
+						$('#select ul li,#series ul li').css('color','#333');
+					});
+					sobre_btn($('#colorContent .colour'));
+					return false;
+				};
+
+				//- MOSTRAR MUESTRA o COLOR ----------------
+				var checkImage = function(muestra,color,acabado,desde) {
+					var $Content = $('#colorContent'),
+						$Muestra = $('#muestraContent'),
+						$Samples = $('#samples'),
+						newAltura = altura;
+					//- Brillo ---
+					var brillo = '';
+					if(parseInt(acabado) == 0) {
+						if(dispositivo=='iPhone5' || dispositivo=='iPhone') 
+							brillo = '<img src="recursos/gloss@2x.png" width="'+ample+'" height="'+newAltura+'"/>';
+						else
+							brillo = '<img src="recursos/gloss1024@2x.png" width="'+ample+'" height="'+newAltura+'"/>';
+					}
+					//- Color Hexadecimal ---
+					if(typeof(color) != 'undefined')
+						$Muestra.html('<div style="background-color:#'+color+'; height:'+altura+'px;">'+brillo+'</div>');
+					//- Muestra ---
+					else {
+						if(dispositivo=='iPhone5' || dispositivo=='iPhone')
+							$Muestra.html('<div style="background:url(recursos/muestras/no/'+muestra+'.jpg) center center no-repeat; background-size: 512px 512px; height:'+newAltura+'px; width:'+ample+'px">'+brillo+'</div>');
+						else
+							$Muestra.html('<div style="background:url(recursos/muestras/no/'+muestra+'.jpg) center center no-repeat; background-size: 1024px 1024px; height:'+newAltura+'px; width:'+ample+'px">'+brillo+'</div>');
+					}
+					//- Boton back ---
+					verBack(true);
+					//- Mostrar muestra o color ---
+					$Samples.css('display','block');
+					$Samples.animate(
+						{ top: '-'+$Samples.height() },
+						300, 
+						function() {
+							sample = 1;
+						}
+					);
+					$Muestra.css('display','block');
+					return false;
+				}
+
+				//- CODIGO MUESTRAS Y COLORES --------------
+				var codiColores = function(colores) {
+					var codi  = new String(),
+						multi = 0;
+					for(var n in colores) {
+						var clase  = 'colour',
+							brillo = new String();
+						//- Ajustar margenes de las muestras ----
+						if(validar(n,parseInt(numLineaColores))) {
+							clase += ' alpha';
+							multi = parseInt(n);
+						}
+						if(n == multi + parseInt(numLineaColores-1))
+							clase += ' omega';
+						//- Añadir brillo ----
+						if(parseInt(colores[n].aca) == 0)
+							brillo = '<img src="recursos/gloss@2x.png" width="'+anchoBrillo+'" height="'+altoBrillo+'"/>';
+						//- Componer ID muestras (nombre en mayusculas + Hexadecimal + Series) ----
+						var idColor = colores[n].nom.toUpperCase()+'-'+pValor+'-'+colores[n].mat+'-'+colores[n].aca+'-'+colores[n].eti+'-'+colores[n].ser;
+						if(colores[n].exa.length > 3)
+							codi += '<div id="'+idColor+'-'+colores[n].exa+'" class="'+clase+'" style="background-color:#'+colores[n].exa+';">'+brillo+'</div>';
+						else
+							codi += '<div id="'+idColor+'" class="'+clase+'" style="background:url(recursos/muestras/th/'+colores[n].nom+'.jpg) center no-repeat; background-size:240px 240px;">'+brillo+'</div>';
+					}
+					return codi;
+				};
+
+				//- COLUMNAS - COLORES ---------------------
+				var columnas_colores = function(material,colores) {
+					var altoColor = parseInt($('#contenedor').height()-($('#cabeza').height()+$('#pie').height()+$('#acaSelect').height()+$('#colorSelect').height()+4))/3;
+
+					var colores = new Array();
+					for(var i in muestras) {
+						var vMAT = parseInt(muestras[i].mat);
+						var vACA = parseInt(muestras[i].aca);
+						if(vMAT === material)
+							colores.push({'nom':normalize(muestras[i].nom),'exa':muestras[i].exa,'aca':muestras[i].aca,'mat':muestras[i].mat,'eti':muestras[i].eti})
+					}
+					var codi  = new String();
+					codi += '<div id="colum-'+numColum+'" class="colum">';
+					codi += '<ul>';
+					for(var n in colores) {
+						var brillo = new String();
+						//- Añadir brillo ----
+						if(parseInt(colores[n].aca) == 0)
+							brillo = '<div style="width:100%; height:100%; background:url(recursos/gloss1024@2x.png) center no-repeat; background-size:100% 100%;"></div>';
+						//- Componer ID muestras (nombre en mayusculas + Hexadecimal + Series) ----
+						var idColor = colores[n].nom.toUpperCase()+'-'+pValor+'-'+colores[n].mat+'-'+colores[n].aca+'-'+colores[n].eti;
+						if(colores[n].exa.length > 3)
+							codi += '<li id="'+idColor+'-'+colores[n].exa+'-'+'" class="colourColum" style="background-color:#'+colores[n].exa+';">'+brillo+'</li>';
+						else
+							codi += '<li id="'+idColor+'-'+'" class="colourColum" style="background:url(recursos/muestras/no/'+colores[n].nom+'.jpg) center no-repeat; background-size:1024px 1024px;">'+brillo+'</li>';
+					}
+					codi += '</ul>';
+					codi += '</div>';
+					$('#matriz').append(codi);
+
+					$('.colourColum').css('height',altoColor+'px');
+					$('#matriz, .colum').css('height',parseInt((altoColor*3)-1)+'px');
+					ajusteColumna();
+					
+					$('#matriz').css('display','block');
+					var columna = eval('$("#colum-'+numColum+'")');
+					activaCarousel(columna);
+
+					return false;
+				};
+
+				//- CAROUSEL MUESTRAS ----------------------
+				function activaCarousel($element){
+					$element.jCarouselLite({
+						vertical: true,
+						mouseWheel: true,
+						visible: 3,
+						init: function(opts, $lis) {
+							var ide = $lis.eq(1).attr('id');
+							var trozos = ide.split('-');
+							//- acabado si en lacado ---
+							var acabadoSelec = '';
+							if(trozos[3]<2&&trozos[2]==2)
+								acabadoSelec = ' '+txt_idi(acabados[trozos[3]]).toUpperCase();
+							//-
+							var materialSelect = $('#acaSelect li').eq(numColum-1).html();
+							var codi = '<span style="color:#333">'+materialSelect.toUpperCase()+acabadoSelec+'</span> '+primerMay(trozos[4]);
+							if($('#colorSelect ul li').length==numColum && $('#colorSelect ul li').length > 0 )
+								$('#colorSelect li').eq(parseInt(trozos[1]-1)).html(codi);
+							else
+								$('#colorSelect ul').append('<li>'+codi+'</li>');
+							//-
+							$lis.each(function(){
+								if($(this).attr('id')!=ide)
+									$(this).css('opacity',0.4);
+								else
+									$(this).css('opacity',1);
+							});
+						},
+						afterEnd: function(a,direction) {
+							var ide = $(this).attr('id')
+							var numColumna = ide.split('-');
+							var ide = a[1].id;
+							var trozos = ide.split('-');
+							//- acabado si en lacado ---
+							var acabadoSelec = '';
+							if(trozos[3]<2&&trozos[2]==2)
+								acabadoSelec = ' '+txt_idi(acabados[trozos[3]]).toUpperCase();
+							//-
+							$('#colorSelect li').eq(parseInt(numColumna[1]-1)).html('<span style="color:#333">'+$('#acaSelect li').eq(numColumna[1]-1).html().toUpperCase()+acabadoSelec+'</span> '+primerMay(trozos[4]));
+							$(this).find('li').each(function(){
+								if($(this).attr('id')!=ide)
+									$(this).css('opacity',0.4);
+								else
+									$(this).animate({
+										'opacity':1},300
+									);
+							});
+						}
+					});
+					return false;
+				}
+
+				//- AJUSTE COLUMNA Y BRILLO ----------------
+				function ajusteColumna() {
+					var porcentaje = 100/numColum;
+					$('#matriz .colum').each(function(){
+						$(this).css({'width':porcentaje+'%','float':'left'});
+						$(this).find('.colourColum').css({'width':'100%'});
+						$(this).find('.colourColum div').css({'width':'100%'});
+					});
+					if(numColum==3 && ample==320){
+						$('#matriz .colum').eq(0).css({'width':'106px'});
+						$('#matriz .colum').eq(1).css({'width':'108px'});
+						$('#matriz .colum').eq(2).css({'width':'106px','float':'right'});
+					}
+					return false;
+				}
+
+				//- VER OCULTAR MAS MENOS ------------------
+				function verMasMenos(logico) {
+					if(logico)
+						$('#mas,#menos').css('display','block');
+					else
+						$('#mas,#menos').css('display','none');
+					return false;
+				}
+
+				//- VER OCULTAR BACK  ------------------
+				function verBack(logico) {
+					if(logico) {
+						$('#idioma').html(txt_idi(textos[5]));
+						back = 1;
+					}
+					else {
+						$('#idioma').html(txt_idi(textos[4]));
+						back = 0;
+					}
+					return false;
+				}
+
+				//- MAS CLICK ------------------------------
+				$('#mas').click(function() {
+					if(numColum<4) {
+						if($('#popover').css('display') != 'none')
+							verPopOver(false);
+						else
+							verPopOver(true);
+					}
+				});
+				sobre_btn($('#mas'));
+
+				$('#sombra').click(function() {
+					if($('#sombra').css('display') != 'none')
+						verPopOver(false);
+				});
+
+				//- MENOS CLICK ----------------------------
+				$('#menos').click(function() {
+					if(numColum>0) {
+						$('#acaSelect ul li').eq(parseInt(numColum-1)).remove();
+						var columna = eval('$("#colum-'+numColum+'")');
+						columna.remove();
+						$('#colorSelect ul li').eq(parseInt(numColum-1)).remove();
+						numColum -= 1; 
+						ajusteColumna();
+
+						if(numColum==0) {
+							verPopOver(true);
+						}
+						else if(numColum<4) {
+							$('#mas').css('background-position','10px 0px');
+						}
+					}
+				});
+				sobre_btn($('#menos'));
+
+				//- LOGO CLICK -----------------------------
+				var logoClick = function() {
+					if($('#gamadecor').css('top') != '0px')
+						$('#icon-search,#icon-palette').css({'background-position':'0px 0px','color':'#999'});
+					$('#combine,#selector').css('left',ample+'px');
+					$('#gamadecor').css('top','0px');
+					//-
+					verMasMenos(false);
+					verBack(false);
+					quiEsta = $('#gamadecor');
+				};
+				sobre_btn($('#gamadecor'));
+
+				//- LUPA CLICK -----------------------------
+				$('#icon-search').click(function() {
+					if($('#combine').css('left') != '0px') {
+						$('#icon-search').css({'background-position':'-64px 0px','color':'#BD1622'});
+						$('#icon-palette').css({'background-position':'0px 0px','color':'#999'});
+					}
+					$('#combine').css('left','0px');
+					$('#gamadecor').css('top',alt+'px');
+					$('#selector').css('left',ample+'px');
+					//-
+					verMasMenos(true);
+					verBack(false);
+					quiEsta = $('#combine');
+				});
+				sobre_btn($('#icon-search'));
+
+				//- PALETTE CLICK --------------------------
+				$('#icon-palette').click(function() {
+					if($('#selector').css('left') != '0px') {
+						$('#icon-search').css({'background-position':'0px 0px','color':'#999'});
+						$('#icon-palette').css({'background-position':'-64px 0px','color':'#BD1622'});
+					}
+					$('#combine').css('left',ample+'px');
+					$('#gamadecor').css('top',alt+'px');
+					$('#selector').css('left','0px');
+					//-
+					verMasMenos(false);
+					if(sample==1)
+						verBack(true);
+					quiEsta = $('#selector');
+				});
+				sobre_btn($('#icon-palette'));
+
+				//- SI HAY SERIE ---------------------------
+				function siHaySerie(val) {
+					selecIdioma();
+					//$('#selector,#gamadecor').css('display','none');
+					$('#icon-search').css({'background-position':'-64px 0px','color':'#BD1622'});
+					$('#icon-palette').css({'background-position':'0px 0px','color':'#666'});
+					$('#selector,#gamadecor').css('top',alt+'px');
+					$('#combine').css('top','0px');
+					quiEsta = $('#combine');
+					var valor = val.replace(/=/gi,'');
+						valor = valor.replace(/_/gi,' ');
+					var codi = '',
+						colores = new Array(),
+						multi = 0;
+					for(var i in muestras) {
+						if(muestras[i].ser.search(valor) > -1)
+							colores.push({'nom':normalize(muestras[i].nom),'exa':muestras[i].exa,'aca':muestras[i].aca,'mat':muestras[i].mat});
+					}
+					muestras_colores(valor,colores);
+					return false;
+				}
+				//-
+				compruebaIdioma();
+				//-
+				var nomSerie = leerGET()[0];
+				if(nomSerie.length>0)
+					siHaySerie(nomSerie);
+			});
+		</script>
+	</body>
+</html>
