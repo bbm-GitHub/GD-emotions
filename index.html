@@ -22,7 +22,7 @@
 		<link rel="stylesheet" type="text/css" href="css/main.css"/>
 	</head>
 
-	<body onload="initialize();" onunload="goingAway();">
+	<body onunload="goingAway();">
 		<div id="contenedor">
 			<!-- CABEZA -->
 			<div id="cabeza" class="wrapper borderBottom">
@@ -133,6 +133,7 @@
 
 			var storage = window.localStorage;
 			var compruebaIdioma = function() {
+				initialize();
 				if(window.sessionStorage && window.localStorage) {
 					var idiLocal = storage.getItem('idioma');
 					if(idiLocal !== null) {
