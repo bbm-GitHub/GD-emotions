@@ -22,7 +22,7 @@
 		<link rel="stylesheet" type="text/css" href="css/main.css"/>
 	</head>
 
-	<body onunload="goingAway();">
+	<body onload="initialize();" onunload="goingAway();">
 		<div id="contenedor">
 			<!-- CABEZA -->
 			<div id="cabeza" class="wrapper borderBottom">
@@ -121,6 +121,7 @@
 		<script type="text/javascript" src="js/jquery.nicescroll.min.js"></script>
 		<script type="text/javascript" src="js/jcarousellite.min.js"></script>
 		<script type="text/javascript" src="js/jquery.mousewheel.js"></script>
+		<script type="text/javascript" src="GAPlugin.js"></script>
 		<script type="text/javascript" src="js/main.js"></script>
 		<script>
 
@@ -149,9 +150,9 @@
 
 			
 			function onDeviceReady() {
+				alert('hola');
 				gaPlugin = window.plugins.gaPlugin;
 				gaPlugin.init(nativePluginResultHandler, nativePluginErrorHandler, "UA-35344900-3", 10);
-				alert('hola');
 			}
 
 			function nativePluginResultHandler (result) {
@@ -166,10 +167,7 @@
 			}
 
 			function initialize() {
-				//document.addEventListener("deviceready", onDeviceReady, true);
-				document.addEventListener("deviceready", function(){
-      				onDeviceReady();
- 				},false);
+				document.addEventListener("deviceready", onDeviceReady, true);
 			}
 
 			function goingAway() {
@@ -178,8 +176,6 @@
 
 
 			$(document).ready(function(e) {
-
-				initialize();
 
 				//- SCROLL --------------------------------
 				$('#colorContent,#gamadecor').niceScroll().hide();
