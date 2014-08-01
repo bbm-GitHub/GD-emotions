@@ -22,7 +22,7 @@
 		<link rel="stylesheet" type="text/css" href="css/main.css"/>
 	</head>
 
-	<body>
+	<body onload="initialize();" onunload="goingAway();">
 		<div id="contenedor">
 			<!-- CABEZA -->
 			<div id="cabeza" class="wrapper borderBottom">
@@ -143,6 +143,34 @@
 						$('#idiomaFranja').css('display','block');
 				}
 			};
+
+			//- GAPlugin : Google Analytics -----------
+			var gaPlugin;
+
+			function initialize() {
+    			document.addEventListener("deviceready", onDeviceReady, true);
+			}
+
+			function onDeviceReady() {
+				gaPlugin = window.plugins.gaPlugin;
+				gaPlugin.init(nativePluginResultHandler, errorHandler, "UA-35344900-3", 10);
+			}
+
+			function nativePluginResultHandler (result) {
+				//alert('nativePluginResultHandler - '+result);
+				console.log('nativePluginResultHandler: '+result);
+
+			}
+        
+			function nativePluginErrorHandler (error) {
+				//alert('nativePluginErrorHandler - '+error);
+				console.log('nativePluginErrorHandler: '+error);
+			}
+
+			function goingAway() {
+				gaPlugin.exit(nativePluginResultHandler, nativePluginErrorHandler);
+			}
+
 
 			$(document).ready(function(e) {
 
