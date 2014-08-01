@@ -133,7 +133,6 @@
 
 			var storage = window.localStorage;
 			var compruebaIdioma = function() {
-				initialize();
 				if(window.sessionStorage && window.localStorage) {
 					var idiLocal = storage.getItem('idioma');
 					if(idiLocal !== null) {
@@ -148,10 +147,7 @@
 			//- GAPlugin : Google Analytics -----------
 			var gaPlugin;
 
-			function initialize() {
-				document.addEventListener("deviceready", onDeviceReady, true);
-			}
-
+			
 			function onDeviceReady() {
 				gaPlugin = window.plugins.gaPlugin;
 				gaPlugin.init(nativePluginResultHandler, nativePluginErrorHandler, "UA-35344900-3", 10);
@@ -169,12 +165,18 @@
 				console.log('nativePluginErrorHandler: '+error);
 			}
 
+			function initialize() {
+				document.addEventListener("deviceready", onDeviceReady, true);
+			}
+
 			function goingAway() {
 				gaPlugin.exit(nativePluginResultHandler, nativePluginErrorHandler);
 			}
 
 
 			$(document).ready(function(e) {
+
+				initialize();
 
 				//- SCROLL --------------------------------
 				$('#colorContent,#gamadecor').niceScroll().hide();
