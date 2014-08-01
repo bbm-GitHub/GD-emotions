@@ -166,7 +166,10 @@
 			}
 
 			function initialize() {
-				document.addEventListener("deviceready", onDeviceReady, true);
+				//document.addEventListener("deviceready", onDeviceReady, true);
+				document.addEventListener("deviceready", function(){
+      				onDeviceReady();
+ 				},true);
 			}
 
 			function goingAway() {
