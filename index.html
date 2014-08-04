@@ -22,15 +22,12 @@
 		<link rel="stylesheet" type="text/css" href="css/main.css"/>
 
 		<script type="text/javascript" src="cordova.js"></script>
-		<script type="text/javascript" src="phonegap.js"></script>
 		<script type="text/javascript" src="cordova_plugins.js"></script>
-		<script type="text/javascript" src="plugins/com.adobe.plugins.GAPlugin/www/GAPlugin.js"></script>
 		<script type="text/javascript">
 			var gaPlugin;
 
-			function initialize() {
-    			document.addEventListener("deviceready", onDeviceReady, false);
-    		}
+			
+    		document.addEventListener("deviceready", onDeviceReady, false);
 
 			function onDeviceReady() {
 				alert('onDeviceReady');
@@ -83,7 +80,7 @@
 		</script>
 	</head>
 
-	<body onload="initialize();" onunload="goingAway();">
+	<body onunload="goingAway();">
 		<div id="contenedor">
 			<!-- CABEZA -->
 			<div id="cabeza" class="wrapper borderBottom">
