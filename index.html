@@ -25,10 +25,11 @@
 			var gaPlugin;
 
 			function initialize() {
-    			document.addEventListener("deviceready", onDeviceReady, true);
-			}
+    			document.addEventListener("deviceready", onDeviceReady, false);
+    		}
 
 			function onDeviceReady() {
+				alert('onDeviceReady');
 				gaPlugin = window.plugins.gaPlugin;
 
 				// Note: A request for permission is REQUIRED by google. You probably want to do this just once, though, and remember the answer for subsequent runs.
@@ -36,6 +37,7 @@
 			}
 
 			function permissionCallback (button) {
+				alert('permissionCallback');
 				if (button === 1)
 					gaPlugin.init(nativePluginResultHandler, nativePluginErrorHandler, "UA-35344900-3", 10);
 			}
