@@ -2,7 +2,7 @@
 <widget xmlns     = "http://www.w3.org/ns/widgets"
         xmlns:gap = "http://phonegap.com/ns/1.0"
         id        = "com.gama-decor.emotions"
-        version   = "1.0.7.5">
+        version   = "1.0.7.6">
 
     <name>GD emotions</name>
 
@@ -25,7 +25,7 @@
     <preference name="fullscreen"       value="false" /> <!-- Oculta la barra de estado situada en la parte superior de la pantalla -->
     <preference name="webviewbounce"    value="false" /> <!-- Rebote superior -->
     <preference name="prerendered-icon" value="true" />  <!-- No incluye el brillo en el icono -->
-    <preference name="exit-on-suspend"  value="true" />  <!-- La aplicación terminará cuando se suspendió -->
+    <preference name="exit-on-suspend"  value="false" />  <!-- La aplicación terminará cuando se suspendió -->
 
     <icon src="recursos/icon.png" />
     <icon src="recursos/icon/icon-57.png"       gap:platform="ios"  width="57" height="57" />
