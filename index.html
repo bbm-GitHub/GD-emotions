@@ -334,7 +334,7 @@
 						});
 						sobre_btn($('#finishes ul li'));
 						//- REGISTRAR PANTALLA ---
-						pagina = $(this).text()+' - '+idi.toUpperCase();
+						pagina = 'Materiales: '+$(this).text()+' - '+idi.toUpperCase();
 						gaPlugin.trackPage(gaSuccess, gaError, pagina);
 					});
 					sobre_btn($('#materials ul li'));
@@ -369,6 +369,9 @@
 						//-
 						verPopOver(false);
 						$('#acaSelect,#colorSelect').css('display','block');
+						//- REGISTRAR PANTALLA DE INICIO ---
+						pagina = 'Combinar: '+$(this).text()+' - '+idi.toUpperCase();
+						gaPlugin.trackPage(gaSuccess, gaError, pagina);
 					});
 					sobre_btn($('#popover ul li'));
 
