@@ -132,7 +132,8 @@
 			}
 
 			var idi = 'es',
-				selecIdioma;
+				selecIdioma,
+				pagina;
 
 			var storage = window.localStorage;
 			var compruebaIdioma = function() {
@@ -145,6 +146,7 @@
 					else
 						$('#idiomaFranja').css('display','block');
 				}
+				pagina = 'GD emotions - '+idi.toUpperCase();
 			};
 
 			//- GAplugin -------------------
@@ -154,6 +156,8 @@
 				alert('onDeviceReady');
 				gaPlugin = window.plugins.gaPlugin;
 				gaPlugin.init(nativePluginResultHandler, nativePluginErrorHandler, "UA-35344900-3", 10);
+				//- GA Idioma ----------------------------
+				gaPlugin.trackPage(nativePluginResultHandler, nativePluginErrorHandler, pagina);
 				// Note: A request for permission is REQUIRED by google. You probably want to do this just once, though, and remember the answer for subsequent runs.
 				//navigator.notification.confirm('GA_PLUGIN would like your permission to collect usage data. No personal or user identifiable data will be collected.', permissionCallback, 'Attention', 'Allow,Deny');
 			}
@@ -203,7 +207,7 @@
 			$(document).ready(function(e) {
 
 				document.addEventListener("deviceready", onDeviceReady, false);
-    			//document.addEventListener("pause", onDevicePause, false);
+    			document.addEventListener("pause", onDevicePause, false);
 
 				//- SCROLL --------------------------------
 				$('#colorContent,#gamadecor').niceScroll().hide();
@@ -309,10 +313,6 @@
 				};
 
 				selecIdioma = function() {
-					//- GA Idioma ----------------------------
-					var pagina = 'GD emotions - '+idi.toUpperCase();
-					gaPlugin.trackPage(nativePluginResultHandler, nativePluginErrorHandler, pagina);
-
 					//-
 					var codi = '';
 					for(var i in materiales) {
