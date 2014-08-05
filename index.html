@@ -202,36 +202,6 @@
 				}
 			};
 
-			/*- GAPlugin : Google Analytics -----------
-			var gaPlugin;
-
-			function onDeviceReady() {
-				alert('hola');
-				gaPlugin = window.plugins.gaPlugin;
-				gaPlugin.init(nativePluginResultHandler, nativePluginErrorHandler, "UA-35344900-3", 10);
-			}
-
-			function nativePluginResultHandler (result) {
-				alert('nativePluginResultHandler - '+result);
-				console.log('nativePluginResultHandler: '+result);
-			}
-
-			function nativePluginErrorHandler (error) {
-				alert('nativePluginErrorHandler - '+error);
-				console.log('nativePluginErrorHandler: '+error);
-			}
-
-			function initialize() {
-				console.log('hola');
-				gaPlugin = window.plugins.gaPlugin;
-				gaPlugin.init(nativePluginResultHandler, nativePluginErrorHandler, "UA-2759734-1", 10);
-				//document.addEventListener("deviceready", onDeviceReady, true);
-			}
-
-			function goingAway() {
-				gaPlugin.exit(nativePluginResultHandler, nativePluginErrorHandler);
-			}*/
-
 			$(document).ready(function(e) {
 
 				//- SCROLL --------------------------------
@@ -416,6 +386,10 @@
 							verBack(false);
 						}
 					});
+
+					//- GA Idioma ----------------------------
+					var pagina = 'GD emotions - '+idi.toUpperCase();
+					gaPlugin.trackPage(nativePluginResultHandler, nativePluginErrorHandler, pagina);
 				};
 
 				//- VER OCULTAR POPOVER --------------------
@@ -1010,7 +984,6 @@
 					$('#combine').css('left',ample+'px');
 					$('#gamadecor').css('top',alt+'px');
 					$('#selector').css('left','0px');
-					gaPlugin.trackEvent(nativePluginResultHandler, nativePluginErrorHandler, "Button", "Click", "Icon palette", 1);
 					//-
 					verMasMenos(false);
 					if(sample==1)
