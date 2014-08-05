@@ -20,9 +20,6 @@
 
 		<link href='http://fonts.googleapis.com/css?family=Questrial' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" type="text/css" href="css/main.css"/>
-
-		<script type="text/javascript" src="cordova.js"></script>
-		<script type="text/javascript" src="cordova_plugins.js"></script>
 	</head>
 
 	<body>
@@ -124,6 +121,10 @@
 		<script type="text/javascript" src="js/jquery.nicescroll.min.js"></script>
 		<script type="text/javascript" src="js/jcarousellite.min.js"></script>
 		<script type="text/javascript" src="js/jquery.mousewheel.js"></script>
+		<!-- PHONEGAP -->
+		<script type="text/javascript" src="cordova.js"></script>
+		<script type="text/javascript" src="cordova_plugins.js"></script>
+		<!-- OWN -->
 		<script type="text/javascript" src="js/main.js"></script>
 		<script>
 
@@ -148,65 +149,55 @@
 				}
 			};
 
-			//- GAplugin -------------------
+			//- GA PLUGIN ------------------------------
 			var gaPlugin;
 
 			function onDeviceReady() {
-				alert('onDeviceReady');
+				//alert('onDeviceReady');
+				console.log('onDeviceReady');
+				//- Aranca plugin ---
 				gaPlugin = window.plugins.gaPlugin;
-				gaPlugin.init(nativePluginResultHandler, nativePluginErrorHandler, "UA-35344900-3", 10);
-				//- GA Idioma ----------------------------
+				gaPlugin.init(gaSuccess, gaError, "UA-35344900-3", 5);
+				//- GA Idioma ---
 				compruebaIdioma();
-				// Note: A request for permission is REQUIRED by google. You probably want to do this just once, though, and remember the answer for subsequent runs.
-				//navigator.notification.confirm('GA_PLUGIN would like your permission to collect usage data. No personal or user identifiable data will be collected.', permissionCallback, 'Attention', 'Allow,Deny');
 			}
-
-			function permissionCallback (button) {
-				alert('permissionCallback');
-				if (button === 1)
-					gaPlugin.init(nativePluginResultHandler, nativePluginErrorHandler, "UA-35344900-3", 10);
+			//- mensaje exito --------------------------
+			function gaSuccess (result) {
+				//alert('gaSuccess - '+result);
+				console.log('gaSuccess: '+result);
 			}
-
-			function nativePluginResultHandler (result) {
-				alert('nativePluginResultHandler - '+result);
-				console.log('nativePluginResultHandler: '+result);
-
+			//- mensaje error --------------------------
+			function gaError (error) {
+				//alert('gaError - '+error);
+				console.log('gaError: '+error);
 			}
-        
-			function nativePluginErrorHandler (error) {
-				alert('nativePluginErrorHandler - '+error);
-				console.log('nativePluginErrorHandler: '+error);
-			}
-
+/*
+			//- Registra evento ------------------------
 			function TrackButtonClicked() {
-				gaPlugin.trackEvent( nativePluginResultHandler, nativePluginErrorHandler, "Button", "Click", "event only", 1);
+				gaPlugin.trackEvent(gaSuccess, gaError, "Button", "Click", "event only", 1);
 			}
-        
+ 			//- Registra variable ----------------------
 			function VariableButtonClicked() {
 				// Set a dimension based on index and value. Make sure you have added a dimension in the GA dashboard to the
 				// default property for the passed in index, and your desired scope. GA allows up to 20 dimensions for a free account
-				gaPlugin.setVariable( nativePluginResultHandler, nativePluginErrorHandler, 1, "Purple");
+				gaPlugin.setVariable( gaSuccess, gaError, 1, "Purple");
 
 				// dimensions are are passed to the next event sent to GA. go ahead and fire off an event with the label (key) of your choice
 				// In this example, the label for custom dimension 1 will show up in the dashboard as "favoriteColor". This is much more efficent
 				// than the old custom variable method introduced in V1, (plus you get 20 free dimensions vs 5 free custom variables)
-				gaPlugin.trackEvent( nativePluginResultHandler, nativePluginErrorHandler, "event with variable", "set variable", "favoriteColor", 1);
+				gaPlugin.trackEvent( gaSuccess, gaError, "event with variable", "set variable", "favoriteColor", 1);
 			}
-        
+ 			//- Registra pagina ----------------------
 			function PageButtonClicked() {
-				gaPlugin.trackPage( nativePluginResultHandler, nativePluginErrorHandler, "some.url.com");
+				gaPlugin.trackPage( gaSuccess, gaError, "some.url.com");
 			}
-
+ 			//- GA Exit ------------------------------
 			function onDevicePause() {
-				gaPlugin.exit(nativePluginResultHandler, nativePluginErrorHandler);
+				gaPlugin.exit(gaSuccess, gaError);
 			}
-
-
+*/
 
 			$(document).ready(function(e) {
-
-
-
 				//- SCROLL --------------------------------
 				$('#colorContent,#gamadecor').niceScroll().hide();
 
@@ -255,7 +246,7 @@
 					else if(idi=='fr') {
 						codig += '<p>GAMADECOR, une société qui appartient au Groupe PORCELANOSA, voit le jour en 1987 avec l’objectif de proposer des meubles de salles de bains et de cuisines de la meilleure qualité, de haute technologie et d’un design avancé.</p>';
 						codig += '<p>Située à Villarreal (province de Castellón, Espagne), ses installations mettent à profit les derniers progrès techniques et occupent actuellement une surface de plus de 125.000 m², où la société occupe en moyenne deux cents travailleurs.</p>';
-						codig += '<p>GAMADECOR exporte ses produits dans plus de trente pays des cinq continents et possède ses propres points de vente en Espagne, en France, au Royaume Uni, aux États Unis, en Italie, au Portugal et en Allemagne. La société travaille en outre avec plus de cent distributeurs 		indépendants.</p>';
+						codig += '<p>GAMADECOR exporte ses produits dans plus de trente pays des cinq continents et possède ses propres points de vente en Espagne, en France, au Royaume Uni, aux États Unis, en Italie, au Portugal et en Allemagne. La société travaille en outre avec plus de cent distributeurs indépendants.</p>';
 						codig += '<p>GAMADECOR<br/>';
 						codig += '   <a href="http://www.gama-decor.com">http://www.gama-decor.com/index.php?i=fr</a></p>';
 						codig += '<p>PORCELANOSA Group<br/>';
@@ -311,7 +302,6 @@
 				};
 
 				selecIdioma = function() {
-					//-
 					var codi = '';
 					for(var i in materiales) {
 						codi += '<li id="#'+i+'">'+txt_idi(materiales[i])+'</li>\n';
@@ -390,9 +380,9 @@
 							verBack(false);
 						}
 					});
-					//
+					//- REGISTRAR PANTALLA DE INICIO ---
 					pagina = 'GD emotions - '+idi.toUpperCase();
-					gaPlugin.trackPage(nativePluginResultHandler, nativePluginErrorHandler, pagina);
+					gaPlugin.trackPage(gaSuccess, gaError, pagina);
 				};
 
 				//- VER OCULTAR POPOVER --------------------
@@ -516,7 +506,7 @@
 							if(window.devicePixelRatio == 2)
 								dispositivo = 'iPad';
 						}
-						//- iPhone --
+						//- iPhone ---
 						else if(uagent.search(/iphone|ipod/) > -1) {
 							if(window.devicePixelRatio == 2) {
 								dispositivo = 'iPhone5';
@@ -959,6 +949,9 @@
 					verMasMenos(false);
 					verBack(false);
 					quiEsta = $('#gamadecor');
+					//- REGISTRAR PANTALLA ---
+					pagina = 'GAMADECOR - '+idi.toUpperCase();
+					gaPlugin.trackPage(gaSuccess, gaError, pagina);
 				};
 				sobre_btn($('#gamadecor'));
 
@@ -975,6 +968,9 @@
 					verMasMenos(true);
 					verBack(false);
 					quiEsta = $('#combine');
+					//- REGISTRAR PANTALLA ---
+					pagina = 'Combinar - '+idi.toUpperCase();
+					gaPlugin.trackPage(gaSuccess, gaError, pagina);
 				});
 				sobre_btn($('#icon-search'));
 
@@ -992,6 +988,9 @@
 					if(sample==1)
 						verBack(true);
 					quiEsta = $('#selector');
+					//- REGISTRAR PANTALLA ---
+					pagina = 'Materiales - '+idi.toUpperCase();
+					gaPlugin.trackPage(gaSuccess, gaError, pagina);
 				});
 				sobre_btn($('#icon-palette'));
 
