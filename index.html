@@ -27,7 +27,7 @@
 			var gaPlugin;
 
 			
-    		document.addEventListener("deviceready", onDeviceReady, false);
+    		
 
 			function onDeviceReady() {
 				alert('onDeviceReady');
@@ -73,14 +73,14 @@
 				gaPlugin.trackPage( nativePluginResultHandler, nativePluginErrorHandler, "some.url.com");
 			}
 
-			function goingAway() {
+			function onDevicePause() {
 				gaPlugin.exit(nativePluginResultHandler, nativePluginErrorHandler);
 			}
 
 		</script>
 	</head>
 
-	<body onunload="goingAway();">
+	<body>
 		<div id="contenedor">
 			<!-- CABEZA -->
 			<div id="cabeza" class="wrapper borderBottom">
@@ -199,6 +199,9 @@
 					}
 					else
 						$('#idiomaFranja').css('display','block');
+
+					document.addEventListener("deviceready", onDeviceReady, false);
+    				document.addEventListener("pause", onDevicePause, false);
 				}
 			};
 
@@ -308,6 +311,11 @@
 				};
 
 				selecIdioma = function() {
+					//- GA Idioma ----------------------------
+					var pagina = 'GD emotions - '+idi.toUpperCase();
+					gaPlugin.trackPage(nativePluginResultHandler, nativePluginErrorHandler, pagina);
+
+					//-
 					var codi = '';
 					for(var i in materiales) {
 						codi += '<li id="#'+i+'">'+txt_idi(materiales[i])+'</li>\n';
@@ -386,11 +394,6 @@
 							verBack(false);
 						}
 					});
-
-					//- GA Idioma ----------------------------
-					var pagina = 'GD emotions - '+idi.toUpperCase();
-					//gaPlugin.trackPage(nativePluginResultHandler, nativePluginErrorHandler, pagina);
-					gaPlugin.exit(nativePluginResultHandler, nativePluginErrorHandler);
 				};
 
 				//- VER OCULTAR POPOVER --------------------
