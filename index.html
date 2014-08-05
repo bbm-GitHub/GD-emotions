@@ -389,7 +389,8 @@
 
 					//- GA Idioma ----------------------------
 					var pagina = 'GD emotions - '+idi.toUpperCase();
-					gaPlugin.trackPage(nativePluginResultHandler, nativePluginErrorHandler, pagina);
+					//gaPlugin.trackPage(nativePluginResultHandler, nativePluginErrorHandler, pagina);
+					gaPlugin.exit(nativePluginResultHandler, nativePluginErrorHandler);
 				};
 
 				//- VER OCULTAR POPOVER --------------------
