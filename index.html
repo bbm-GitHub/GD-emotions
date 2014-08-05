@@ -50,7 +50,7 @@
 			}
         
 			function nativePluginErrorHandler (error) {
-				//alert('nativePluginErrorHandler - '+error);
+				alert('nativePluginErrorHandler - '+error);
 				console.log('nativePluginErrorHandler: '+error);
 			}
 
@@ -1010,6 +1010,7 @@
 					$('#combine').css('left',ample+'px');
 					$('#gamadecor').css('top',alt+'px');
 					$('#selector').css('left','0px');
+					gaPlugin.trackEvent(nativePluginResultHandler, nativePluginErrorHandler, "Button", "Click", "Icon palette", 1);
 					//-
 					verMasMenos(false);
 					if(sample==1)
