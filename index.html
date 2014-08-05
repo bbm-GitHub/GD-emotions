@@ -332,6 +332,9 @@
 							componerColores(aValor,2);
 						});
 						sobre_btn($('#finishes ul li'));
+						//- REGISTRAR PANTALLA ---
+						pagina = $(this).text()+' - '+idi.toUpperCase();
+						gaPlugin.trackPage(gaSuccess, gaError, pagina);
 					});
 					sobre_btn($('#materials ul li'));
 					//- OTROS ----------------------------
@@ -599,7 +602,6 @@
 						//-
 						$('#matriz .colum').each(function(){
 							var columna = $(this);
-							console.log(columna.attr('id'));
 							columna.trigger('endCarousel');
 							activaCarousel(columna);
 						});	
