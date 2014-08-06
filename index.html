@@ -155,10 +155,10 @@
 			function onDeviceReady() {
 				//alert('onDeviceReady');
 				console.log('onDeviceReady');
-    			document.addEventListener("pause", onDevicePause, false);
+    			document.addEventListener('pause', onDevicePause, false);
 				//- Aranca plugin ---
 				gaPlugin = window.plugins.gaPlugin;
-				gaPlugin.init(gaSuccess, gaError, "UA-35344900-3", 5);
+				gaPlugin.init(gaSuccess, gaError, 'UA-35344900-3', 4);
 				//- GA Idioma ---
 				compruebaIdioma();
 			}
@@ -334,7 +334,7 @@
 						});
 						sobre_btn($('#finishes ul li'));
 						//- REGISTRAR PANTALLA ---
-						pagina = 'Materiales: '+$(this).text()+' - '+idi.toUpperCase();
+						pagina = $('#icon-palette').text()+': '+$(this).text()+' - '+idi.toUpperCase();
 						gaPlugin.trackPage(gaSuccess, gaError, pagina);
 					});
 					sobre_btn($('#materials ul li'));
@@ -370,7 +370,7 @@
 						verPopOver(false);
 						$('#acaSelect,#colorSelect').css('display','block');
 						//- REGISTRAR PANTALLA DE INICIO ---
-						pagina = 'Combinar: '+$(this).text()+' - '+idi.toUpperCase();
+						pagina = $('#icon-search').text()+': '+$(this).text()+' - '+idi.toUpperCase();
 						gaPlugin.trackPage(gaSuccess, gaError, pagina);
 					});
 					sobre_btn($('#popover ul li'));
@@ -975,7 +975,7 @@
 					verBack(false);
 					quiEsta = $('#combine');
 					//- REGISTRAR PANTALLA ---
-					pagina = 'Combinar - '+idi.toUpperCase();
+					pagina = $('#icon-search').text()+' - '+idi.toUpperCase();
 					gaPlugin.trackPage(gaSuccess, gaError, pagina);
 				});
 				sobre_btn($('#icon-search'));
@@ -995,7 +995,7 @@
 						verBack(true);
 					quiEsta = $('#selector');
 					//- REGISTRAR PANTALLA ---
-					pagina = 'Materiales - '+idi.toUpperCase();
+					pagina = $('#icon-palette').text()+' - '+idi.toUpperCase();
 					gaPlugin.trackPage(gaSuccess, gaError, pagina);
 				});
 				sobre_btn($('#icon-palette'));
