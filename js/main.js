@@ -242,7 +242,7 @@ var textos = new Array(
 */
 var materiales = new Array(
 	{'es':'Laminado','gb':'Laminate','fr':'Mélamine'},
-	{'es':'Estratificado','gb':'Stratified','fr':'Stratifié'},
+	{'es':'HPL','gb':'HPL','fr':'HPL'},
 	{'es':'Lacado','gb':'Lacquer','fr':'Lacquer'},
 	{'es':'Chapado','gb':'Veneer','fr':'Plaqué'}
 );

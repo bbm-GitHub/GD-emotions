@@ -2,7 +2,7 @@
 <widget xmlns     = "http://www.w3.org/ns/widgets"
         xmlns:gap = "http://phonegap.com/ns/1.0"
         id        = "com.gama-decor.emotions"
-        version   = "1.1.0">
+        version   = "1.2.0">
 
     <name>GD emotions</name>
 
@@ -18,7 +18,7 @@
 
     <gap:platform name="ios" />
 
-    <preference name="phonegap-version" value="3.5.0" />
+    <preference name="phonegap-version" value="cli-5.2.0" />
     <preference name="target-device"    value="universal" />
     <preference name="fullscreen"       value="false" /> <!-- Oculta la barra de estado situada en la parte superior de la pantalla -->
     <preference name="webviewbounce"    value="false" /> <!-- Rebote superior -->
@@ -46,6 +46,5 @@
     <gap:plugin name="com.phonegap.plugin.statusbar" version="1.1.0" />
 
     <preference name="StatusBarOverlaysWebView" value="false" />
-    <preference name="StatusBarBackgroundColor" value="#F8F8F8" />
 
 </widget>
