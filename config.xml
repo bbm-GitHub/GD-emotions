@@ -18,7 +18,7 @@
 
     <gap:platform name="ios" />
 
-    <preference name="phonegap-version" value="cli-5.2.0" />
+    <preference name="phonegap-version" value="3.5.0" />
     <preference name="target-device"    value="universal" />
     <preference name="fullscreen"       value="false" /> <!-- Oculta la barra de estado situada en la parte superior de la pantalla -->
     <preference name="webviewbounce"    value="false" /> <!-- Rebote superior -->
